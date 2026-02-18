@@ -21,9 +21,9 @@ class ActiveSessionViewModel extends ChangeNotifier {
     required this.workout,
     required ExerciseRepository exerciseRepository,
     required SessionHistoryRepository historyRepository,
-  })  : _exerciseRepository = exerciseRepository,
-        _historyRepository = historyRepository,
-        date = DateTime.now();
+  }) : _exerciseRepository = exerciseRepository,
+       _historyRepository = historyRepository,
+       date = DateTime.now();
 
   final Workout workout;
   final ExerciseRepository _exerciseRepository;
@@ -41,16 +41,15 @@ class ActiveSessionViewModel extends ChangeNotifier {
 
   /// A snapshot of the current session state.
   ActiveSessionState get state => ActiveSessionState(
-        exerciseIndex: _exerciseIndex,
-        currentSet: _currentSet,
-        isResting: _isResting,
-        remainingSeconds: _remainingSeconds,
-        isComplete: _isComplete,
-      );
+    exerciseIndex: _exerciseIndex,
+    currentSet: _currentSet,
+    isResting: _isResting,
+    remainingSeconds: _remainingSeconds,
+    isComplete: _isComplete,
+  );
 
   /// The exercise currently being performed.
-  WorkoutExercise get currentExercise =>
-      workout.exercises[_exerciseIndex];
+  WorkoutExercise get currentExercise => workout.exercises[_exerciseIndex];
 
   /// Marks the current set as done. If more work remains,
   /// starts a 2-minute rest timer; otherwise marks the
@@ -58,10 +57,8 @@ class ActiveSessionViewModel extends ChangeNotifier {
   void completeSet() {
     if (_isComplete) return;
 
-    final isLastSet =
-        _currentSet >= currentExercise.series;
-    final isLastExercise =
-        _exerciseIndex >= workout.exercises.length - 1;
+    final isLastSet = _currentSet >= currentExercise.series;
+    final isLastExercise = _exerciseIndex >= workout.exercises.length - 1;
 
     if (isLastSet && isLastExercise) {
       _saveSession();
@@ -83,8 +80,7 @@ class ActiveSessionViewModel extends ChangeNotifier {
 
   /// Resolves an exercise ID to its display name.
   String exerciseName(String exerciseId) {
-    final exercise =
-        _exerciseRepository.findById(exerciseId);
+    final exercise = _exerciseRepository.findById(exerciseId);
     return exercise?.title ?? 'Unknown exercise';
   }
 
@@ -111,18 +107,15 @@ class ActiveSessionViewModel extends ChangeNotifier {
     _remainingSeconds = _restDuration;
     notifyListeners();
 
-    _timer = Timer.periodic(
-      const Duration(seconds: 1),
-      (_) {
-        _remainingSeconds--;
-        if (_remainingSeconds <= 0) {
-          _cancelTimer();
-          _isResting = false;
-          _advance();
-        }
-        notifyListeners();
-      },
-    );
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _remainingSeconds--;
+      if (_remainingSeconds <= 0) {
+        _cancelTimer();
+        _isResting = false;
+        _advance();
+      }
+      notifyListeners();
+    });
   }
 
   /// Moves to the next set or next exercise.

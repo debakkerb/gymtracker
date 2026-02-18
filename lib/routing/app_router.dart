@@ -36,8 +36,7 @@ GoRouter buildRouter({
     redirect: (context, state) {
       final loggedIn = authRepository.currentUser.value != null;
       final path = state.uri.path;
-      final isAuthRoute =
-          path == '/login' || path == '/register';
+      final isAuthRoute = path == '/login' || path == '/register';
 
       if (!loggedIn && !isAuthRoute) return '/login';
       if (loggedIn && isAuthRoute) return '/';
@@ -47,35 +46,26 @@ GoRouter buildRouter({
       GoRoute(
         path: '/',
         builder: (context, state) => WorkoutListScreen(
-          viewModel: WorkoutListViewModel(
-            repository: workoutRepository,
-          ),
+          viewModel: WorkoutListViewModel(repository: workoutRepository),
           exerciseRepository: exerciseRepository,
           authRepository: authRepository,
         ),
       ),
       GoRoute(
         path: '/login',
-        builder: (context, state) => LoginScreen(
-          viewModel: LoginViewModel(
-            repository: authRepository,
-          ),
-        ),
+        builder: (context, state) =>
+            LoginScreen(viewModel: LoginViewModel(repository: authRepository)),
       ),
       GoRoute(
         path: '/register',
         builder: (context, state) => RegisterScreen(
-          viewModel: RegisterViewModel(
-            repository: authRepository,
-          ),
+          viewModel: RegisterViewModel(repository: authRepository),
         ),
       ),
       GoRoute(
         path: '/workouts/create',
         builder: (context, state) => WorkoutCreateScreen(
-          viewModel: WorkoutCreateViewModel(
-            repository: workoutRepository,
-          ),
+          viewModel: WorkoutCreateViewModel(repository: workoutRepository),
           exerciseRepository: exerciseRepository,
         ),
       ),
@@ -94,9 +84,7 @@ GoRouter buildRouter({
           final workout = workoutRepository.findById(id);
           if (workout == null) {
             return const Scaffold(
-              body: Center(
-                child: Text('Workout not found'),
-              ),
+              body: Center(child: Text('Workout not found')),
             );
           }
           return ActiveSessionScreen(
@@ -111,9 +99,7 @@ GoRouter buildRouter({
       GoRoute(
         path: '/exercises',
         builder: (context, state) => ExerciseListScreen(
-          viewModel: ExerciseListViewModel(
-            repository: exerciseRepository,
-          ),
+          viewModel: ExerciseListViewModel(repository: exerciseRepository),
         ),
         routes: [
           GoRoute(
@@ -128,13 +114,10 @@ GoRouter buildRouter({
             path: ':id',
             builder: (context, state) {
               final id = state.pathParameters['id']!;
-              final exercise =
-                  exerciseRepository.findById(id);
+              final exercise = exerciseRepository.findById(id);
               if (exercise == null) {
                 return const Scaffold(
-                  body: Center(
-                    child: Text('Exercise not found'),
-                  ),
+                  body: Center(child: Text('Exercise not found')),
                 );
               }
               return ExerciseEditScreen(

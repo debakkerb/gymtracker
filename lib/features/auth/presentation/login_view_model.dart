@@ -5,7 +5,7 @@ import '../data/auth_repository.dart';
 /// Manages form state for the login screen.
 class LoginViewModel extends ChangeNotifier {
   LoginViewModel({required AuthRepository repository})
-      : _repository = repository;
+    : _repository = repository;
 
   final AuthRepository _repository;
 
@@ -13,8 +13,7 @@ class LoginViewModel extends ChangeNotifier {
   String _password = '';
 
   /// Whether the form has enough data to attempt login.
-  bool get canSubmit =>
-      _email.trim().isNotEmpty && _password.isNotEmpty;
+  bool get canSubmit => _email.trim().isNotEmpty && _password.isNotEmpty;
 
   set email(String value) {
     _email = value;

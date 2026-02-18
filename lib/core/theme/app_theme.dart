@@ -10,14 +10,8 @@ abstract final class AppTheme {
       brightness: Brightness.light,
     ),
     textTheme: const TextTheme(
-      displayLarge: TextStyle(
-        fontSize: 57,
-        fontWeight: FontWeight.bold,
-      ),
-      titleLarge: TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.bold,
-      ),
+      displayLarge: TextStyle(fontSize: 57, fontWeight: FontWeight.bold),
+      titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       bodyLarge: TextStyle(fontSize: 16, height: 1.5),
       bodyMedium: TextStyle(fontSize: 14, height: 1.4),
       labelSmall: TextStyle(fontSize: 11),
@@ -30,14 +24,8 @@ abstract final class AppTheme {
       brightness: Brightness.dark,
     ),
     textTheme: const TextTheme(
-      displayLarge: TextStyle(
-        fontSize: 57,
-        fontWeight: FontWeight.bold,
-      ),
-      titleLarge: TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.bold,
-      ),
+      displayLarge: TextStyle(fontSize: 57, fontWeight: FontWeight.bold),
+      titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       bodyLarge: TextStyle(fontSize: 16, height: 1.5),
       bodyMedium: TextStyle(fontSize: 14, height: 1.4),
       labelSmall: TextStyle(fontSize: 11),

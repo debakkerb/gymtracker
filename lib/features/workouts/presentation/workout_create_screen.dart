@@ -18,8 +18,7 @@ class WorkoutCreateScreen extends StatefulWidget {
   final ExerciseRepository exerciseRepository;
 
   @override
-  State<WorkoutCreateScreen> createState() =>
-      _WorkoutCreateScreenState();
+  State<WorkoutCreateScreen> createState() => _WorkoutCreateScreenState();
 }
 
 class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
@@ -51,8 +50,7 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
   }
 
   String _exerciseName(WorkoutExercise entry) {
-    final exercise =
-        widget.exerciseRepository.findById(entry.exerciseId);
+    final exercise = widget.exerciseRepository.findById(entry.exerciseId);
     return exercise?.title ?? 'Unknown exercise';
   }
 
@@ -102,10 +100,7 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Exercises',
-                      style: textTheme.titleMedium,
-                    ),
+                    Text('Exercises', style: textTheme.titleMedium),
                     FilledButton.tonalIcon(
                       onPressed: _addExercise,
                       icon: const Icon(Icons.add),
@@ -153,10 +148,7 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
       for (var i = 0; i < _vm.exercises.length; i++)
         Card(
           child: ListTile(
-            leading: Icon(
-              Icons.fitness_center,
-              color: colorScheme.primary,
-            ),
+            leading: Icon(Icons.fitness_center, color: colorScheme.primary),
             title: Text(_exerciseName(_vm.exercises[i])),
             subtitle: Text(
               '${_vm.exercises[i].repetitions} reps '
@@ -164,10 +156,7 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
               style: textTheme.bodySmall,
             ),
             trailing: IconButton(
-              icon: Icon(
-                Icons.remove_circle_outline,
-                color: colorScheme.error,
-              ),
+              icon: Icon(Icons.remove_circle_outline, color: colorScheme.error),
               onPressed: () => _vm.removeExerciseAt(i),
             ),
           ),

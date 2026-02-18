@@ -19,8 +19,7 @@ class WorkoutRepository {
 
   /// Removes the workout with [id] and notifies listeners.
   void remove(String id) {
-    _workouts.value =
-        _workouts.value.where((w) => w.id != id).toList();
+    _workouts.value = _workouts.value.where((w) => w.id != id).toList();
   }
 
   /// Returns the workout with [id], or `null` if not found.

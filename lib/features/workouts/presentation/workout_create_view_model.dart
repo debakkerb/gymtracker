@@ -8,7 +8,7 @@ import '../domain/workout_exercise.dart';
 /// Manages the form state for creating a new workout.
 class WorkoutCreateViewModel extends ChangeNotifier {
   WorkoutCreateViewModel({required WorkoutRepository repository})
-      : _repository = repository;
+    : _repository = repository;
 
   final WorkoutRepository _repository;
   static const _uuid = Uuid();
@@ -18,14 +18,12 @@ class WorkoutCreateViewModel extends ChangeNotifier {
   final List<WorkoutExercise> _exercises = [];
 
   /// The current list of exercises in this workout.
-  List<WorkoutExercise> get exercises =>
-      List.unmodifiable(_exercises);
+  List<WorkoutExercise> get exercises => List.unmodifiable(_exercises);
 
   /// Whether the form has enough data to submit.
   ///
   /// Requires a non-empty title and at least one exercise.
-  bool get canSubmit =>
-      _title.trim().isNotEmpty && _exercises.isNotEmpty;
+  bool get canSubmit => _title.trim().isNotEmpty && _exercises.isNotEmpty;
 
   set title(String value) {
     _title = value;
@@ -56,8 +54,7 @@ class WorkoutCreateViewModel extends ChangeNotifier {
     final workout = Workout(
       id: _uuid.v4(),
       title: _title.trim(),
-      description:
-          _description.trim().isEmpty ? null : _description.trim(),
+      description: _description.trim().isEmpty ? null : _description.trim(),
       exercises: List.unmodifiable(_exercises),
     );
     _repository.add(workout);

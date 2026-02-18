@@ -5,10 +5,7 @@ import 'register_view_model.dart';
 
 /// Registration form screen.
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({
-    required this.viewModel,
-    super.key,
-  });
+  const RegisterScreen({required this.viewModel, super.key});
 
   final RegisterViewModel viewModel;
 
@@ -22,8 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _confirmController = TextEditingController();
 
-  static final _emailRegex =
-      RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+  static final _emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
 
   RegisterViewModel get _vm => widget.viewModel;
 
@@ -55,18 +51,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     final error = _vm.register();
     if (error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error)));
       return;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Registration successful — please log in',
-        ),
-      ),
+      const SnackBar(content: Text('Registration successful — please log in')),
     );
     context.go('/login');
   }
@@ -75,8 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final now = DateTime.now();
     final picked = await showDatePicker(
       context: context,
-      initialDate:
-          _vm.dateOfBirth ?? now.subtract(const Duration(days: 7300)),
+      initialDate: _vm.dateOfBirth ?? now.subtract(const Duration(days: 7300)),
       firstDate: DateTime(now.year - 100),
       lastDate: DateTime(now.year - 13),
     );
@@ -169,8 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton.icon(
-                        onPressed:
-                            _vm.canSubmit ? _onRegister : null,
+                        onPressed: _vm.canSubmit ? _onRegister : null,
                         icon: const Icon(Icons.person_add),
                         label: const Text('Register'),
                       ),
@@ -204,10 +194,7 @@ class _DateOfBirthSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Date of birth (optional)',
-          style: textTheme.titleSmall,
-        ),
+        Text('Date of birth (optional)', style: textTheme.titleSmall),
         const SizedBox(height: 8),
         Row(
           children: [
@@ -215,17 +202,15 @@ class _DateOfBirthSection extends StatelessWidget {
               child: Text(
                 dateOfBirth != null
                     ? '${dateOfBirth!.day}/'
-                        '${dateOfBirth!.month}/'
-                        '${dateOfBirth!.year}'
+                          '${dateOfBirth!.month}/'
+                          '${dateOfBirth!.year}'
                     : 'Not set',
                 style: textTheme.bodyLarge,
               ),
             ),
             FilledButton.tonal(
               onPressed: onPick,
-              child: Text(
-                dateOfBirth != null ? 'Change' : 'Pick date',
-              ),
+              child: Text(dateOfBirth != null ? 'Change' : 'Pick date'),
             ),
             if (dateOfBirth != null) ...[
               const SizedBox(width: 8),

@@ -7,7 +7,7 @@ import '../domain/user.dart';
 /// Manages form state for the registration screen.
 class RegisterViewModel extends ChangeNotifier {
   RegisterViewModel({required AuthRepository repository})
-      : _repository = repository;
+    : _repository = repository;
 
   final AuthRepository _repository;
   static const _uuid = Uuid();

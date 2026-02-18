@@ -31,19 +31,14 @@ class WorkoutCard extends StatelessWidget {
 
     return Card(
       elevation: 1,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 6,
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       clipBehavior: Clip.antiAlias,
       child: ExpansionTile(
         leading: CircleAvatar(
           backgroundColor: colorScheme.primaryContainer,
           child: Text(
             workout.title.characters.first.toUpperCase(),
-            style: TextStyle(
-              color: colorScheme.onPrimaryContainer,
-            ),
+            style: TextStyle(color: colorScheme.onPrimaryContainer),
           ),
         ),
         title: Text(workout.title),
@@ -59,10 +54,7 @@ class WorkoutCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (workout.description != null) ...[
-                  Text(
-                    workout.description!,
-                    style: textTheme.bodyMedium,
-                  ),
+                  Text(workout.description!, style: textTheme.bodyMedium),
                   const SizedBox(height: 12),
                 ],
                 ...workout.exercises.map(
@@ -103,9 +95,7 @@ class WorkoutCard extends StatelessWidget {
                       ),
                       label: Text(
                         'Delete',
-                        style: TextStyle(
-                          color: colorScheme.error,
-                        ),
+                        style: TextStyle(color: colorScheme.error),
                       ),
                     ),
                     const SizedBox(width: 8),

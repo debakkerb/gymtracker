@@ -17,9 +17,7 @@ class RestTimerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final progress = totalSeconds > 0
-        ? remainingSeconds / totalSeconds
-        : 0.0;
+    final progress = totalSeconds > 0 ? remainingSeconds / totalSeconds : 0.0;
 
     final minutes = remainingSeconds ~/ 60;
     final seconds = remainingSeconds % 60;
@@ -37,20 +35,16 @@ class RestTimerWidget extends StatelessWidget {
             child: CircularProgressIndicator(
               value: progress,
               strokeWidth: 8,
-              backgroundColor:
-                  colorScheme.surfaceContainerHighest,
+              backgroundColor: colorScheme.surfaceContainerHighest,
               color: colorScheme.primary,
             ),
           ),
           Text(
             label,
-            style: Theme.of(context)
-                .textTheme
-                .displaySmall
-                ?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
-                ),
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSurface,
+            ),
           ),
         ],
       ),

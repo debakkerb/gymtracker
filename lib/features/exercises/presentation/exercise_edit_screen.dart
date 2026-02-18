@@ -6,16 +6,12 @@ import 'widgets/exercise_image_picker.dart';
 
 /// Screen for viewing and editing an existing exercise.
 class ExerciseEditScreen extends StatefulWidget {
-  const ExerciseEditScreen({
-    required this.viewModel,
-    super.key,
-  });
+  const ExerciseEditScreen({required this.viewModel, super.key});
 
   final ExerciseEditViewModel viewModel;
 
   @override
-  State<ExerciseEditScreen> createState() =>
-      _ExerciseEditScreenState();
+  State<ExerciseEditScreen> createState() => _ExerciseEditScreenState();
 }
 
 class _ExerciseEditScreenState extends State<ExerciseEditScreen> {
@@ -31,10 +27,10 @@ class _ExerciseEditScreenState extends State<ExerciseEditScreen> {
     super.initState();
     final exercise = _vm.exercise;
     _titleController = TextEditingController(text: exercise.title);
-    _descriptionController =
-        TextEditingController(text: exercise.description ?? '');
-    _linkController =
-        TextEditingController(text: exercise.externalLink ?? '');
+    _descriptionController = TextEditingController(
+      text: exercise.description ?? '',
+    );
+    _linkController = TextEditingController(text: exercise.externalLink ?? '');
   }
 
   @override

@@ -8,12 +8,12 @@ class ExerciseEditViewModel extends ChangeNotifier {
   ExerciseEditViewModel({
     required ExerciseRepository repository,
     required Exercise exercise,
-  })  : _repository = repository,
-        _exercise = exercise,
-        _title = exercise.title,
-        _description = exercise.description ?? '',
-        _externalLink = exercise.externalLink ?? '',
-        _imageBytes = exercise.imageBytes;
+  }) : _repository = repository,
+       _exercise = exercise,
+       _title = exercise.title,
+       _description = exercise.description ?? '',
+       _externalLink = exercise.externalLink ?? '',
+       _imageBytes = exercise.imageBytes;
 
   final ExerciseRepository _repository;
   final Exercise _exercise;
@@ -64,9 +64,8 @@ class ExerciseEditViewModel extends ChangeNotifier {
       title: _title.trim(),
       description: () =>
           _description.trim().isEmpty ? null : _description.trim(),
-      externalLink: () => _externalLink.trim().isEmpty
-          ? null
-          : _externalLink.trim(),
+      externalLink: () =>
+          _externalLink.trim().isEmpty ? null : _externalLink.trim(),
       imageBytes: () => _imageBytes,
     );
     _repository.update(updated);

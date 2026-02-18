@@ -17,9 +17,8 @@ Future<WorkoutExercise?> showExercisePickerSheet({
   return showModalBottomSheet<WorkoutExercise>(
     context: context,
     isScrollControlled: true,
-    builder: (context) => _ExercisePickerSheet(
-      exerciseRepository: exerciseRepository,
-    ),
+    builder: (context) =>
+        _ExercisePickerSheet(exerciseRepository: exerciseRepository),
   );
 }
 
@@ -29,8 +28,7 @@ class _ExercisePickerSheet extends StatefulWidget {
   final ExerciseRepository exerciseRepository;
 
   @override
-  State<_ExercisePickerSheet> createState() =>
-      _ExercisePickerSheetState();
+  State<_ExercisePickerSheet> createState() => _ExercisePickerSheetState();
 }
 
 class _ExercisePickerSheetState extends State<_ExercisePickerSheet> {
@@ -64,10 +62,7 @@ class _ExercisePickerSheetState extends State<_ExercisePickerSheet> {
     );
     if (title == null || title.trim().isEmpty) return;
 
-    final exercise = Exercise(
-      id: _uuid.v4(),
-      title: title.trim(),
-    );
+    final exercise = Exercise(id: _uuid.v4(), title: title.trim());
     widget.exerciseRepository.add(exercise);
     setState(() => _selected = exercise);
   }
@@ -87,8 +82,7 @@ class _ExercisePickerSheetState extends State<_ExercisePickerSheet> {
       valueListenable: widget.exerciseRepository.exercises,
       builder: (context, exercises, _) {
         return Padding(
-          padding:
-              EdgeInsets.fromLTRB(16, 24, 16, 16 + bottomInset),
+          padding: EdgeInsets.fromLTRB(16, 24, 16, 16 + bottomInset),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,8 +92,7 @@ class _ExercisePickerSheetState extends State<_ExercisePickerSheet> {
                 children: [
                   Text(
                     'Add Exercise',
-                    style:
-                        Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                   TextButton.icon(
                     onPressed: _createExercise,
@@ -117,29 +110,19 @@ class _ExercisePickerSheetState extends State<_ExercisePickerSheet> {
                 initialValue: _selected,
                 items: exercises
                     .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e.title),
-                      ),
+                      (e) => DropdownMenuItem(value: e, child: Text(e.title)),
                     )
                     .toList(),
-                onChanged: (value) =>
-                    setState(() => _selected = value),
+                onChanged: (value) => setState(() => _selected = value),
               ),
               if (exercises.isEmpty)
                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 8, bottom: 8),
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
                   child: Text(
                     'No exercises yet — tap "Create new" above.',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurfaceVariant,
-                        ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
               const SizedBox(height: 16),
@@ -153,9 +136,7 @@ class _ExercisePickerSheetState extends State<_ExercisePickerSheet> {
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       onChanged: (_) => setState(() {}),
                     ),
                   ),
@@ -168,9 +149,7 @@ class _ExercisePickerSheetState extends State<_ExercisePickerSheet> {
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       onChanged: (_) => setState(() {}),
                     ),
                   ),
@@ -197,8 +176,7 @@ class _QuickCreateDialog extends StatefulWidget {
   const _QuickCreateDialog();
 
   @override
-  State<_QuickCreateDialog> createState() =>
-      _QuickCreateDialogState();
+  State<_QuickCreateDialog> createState() => _QuickCreateDialogState();
 }
 
 class _QuickCreateDialogState extends State<_QuickCreateDialog> {
@@ -230,10 +208,7 @@ class _QuickCreateDialogState extends State<_QuickCreateDialog> {
           onPressed: () => Navigator.pop(context),
           child: const Text('Cancel'),
         ),
-        FilledButton(
-          onPressed: _submit,
-          child: const Text('Create'),
-        ),
+        FilledButton(onPressed: _submit, child: const Text('Create')),
       ],
     );
   }

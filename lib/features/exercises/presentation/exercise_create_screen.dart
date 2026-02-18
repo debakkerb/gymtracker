@@ -6,16 +6,12 @@ import 'widgets/exercise_image_picker.dart';
 
 /// Form screen for creating a new exercise.
 class ExerciseCreateScreen extends StatefulWidget {
-  const ExerciseCreateScreen({
-    required this.viewModel,
-    super.key,
-  });
+  const ExerciseCreateScreen({required this.viewModel, super.key});
 
   final ExerciseCreateViewModel viewModel;
 
   @override
-  State<ExerciseCreateScreen> createState() =>
-      _ExerciseCreateScreenState();
+  State<ExerciseCreateScreen> createState() => _ExerciseCreateScreenState();
 }
 
 class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {

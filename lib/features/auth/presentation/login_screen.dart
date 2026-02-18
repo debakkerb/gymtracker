@@ -5,10 +5,7 @@ import 'login_view_model.dart';
 
 /// Login form screen.
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({
-    required this.viewModel,
-    super.key,
-  });
+  const LoginScreen({required this.viewModel, super.key});
 
   final LoginViewModel viewModel;
 
@@ -45,9 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
   void _onLogin() {
     final error = _vm.login();
     if (error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error)));
       return;
     }
     context.go('/');
@@ -92,8 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
               builder: (context, _) => SizedBox(
                 width: double.infinity,
                 child: FilledButton.icon(
-                  onPressed:
-                      _vm.canSubmit ? _onLogin : null,
+                  onPressed: _vm.canSubmit ? _onLogin : null,
                   icon: const Icon(Icons.login),
                   label: const Text('Log in'),
                 ),
@@ -103,9 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: TextButton(
                 onPressed: () => context.go('/register'),
-                child: const Text(
-                  "Don't have an account? Register",
-                ),
+                child: const Text("Don't have an account? Register"),
               ),
             ),
           ],

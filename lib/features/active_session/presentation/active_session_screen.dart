@@ -10,20 +10,15 @@ const _restDuration = 120;
 /// A guided session screen that walks through each exercise
 /// set-by-set with a rest timer between sets.
 class ActiveSessionScreen extends StatefulWidget {
-  const ActiveSessionScreen({
-    required this.viewModel,
-    super.key,
-  });
+  const ActiveSessionScreen({required this.viewModel, super.key});
 
   final ActiveSessionViewModel viewModel;
 
   @override
-  State<ActiveSessionScreen> createState() =>
-      _ActiveSessionScreenState();
+  State<ActiveSessionScreen> createState() => _ActiveSessionScreenState();
 }
 
-class _ActiveSessionScreenState
-    extends State<ActiveSessionScreen> {
+class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
   @override
   void dispose() {
     widget.viewModel.dispose();
@@ -35,9 +30,7 @@ class _ActiveSessionScreenState
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('End session?'),
-        content: const Text(
-          'Your progress will be lost.',
-        ),
+        content: const Text('Your progress will be lost.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -56,10 +49,8 @@ class _ActiveSessionScreenState
   @override
   Widget build(BuildContext context) {
     final vm = widget.viewModel;
-    final localizations =
-        MaterialLocalizations.of(context);
-    final formattedDate = localizations
-        .formatMediumDate(vm.date);
+    final localizations = MaterialLocalizations.of(context);
+    final formattedDate = localizations.formatMediumDate(vm.date);
 
     return PopScope(
       canPop: false,
@@ -99,16 +90,12 @@ class _ActiveSessionScreenState
             final state = vm.state;
 
             if (state.isComplete) {
-              return _CompletionView(
-                onDone: () => context.go('/'),
-              );
+              return _CompletionView(onDone: () => context.go('/'));
             }
 
             final exercise = vm.currentExercise;
-            final name =
-                vm.exerciseName(exercise.exerciseId);
-            final totalExercises =
-                vm.workout.exercises.length;
+            final name = vm.exerciseName(exercise.exerciseId);
+            final totalExercises = vm.workout.exercises.length;
 
             if (state.isResting) {
               return _RestView(
