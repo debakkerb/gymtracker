@@ -16,7 +16,10 @@
       "Bash(/opt/homebrew/share/android-commandlinetools/platform-tools/adb shell:*)",
       "Bash(/opt/homebrew/share/android-commandlinetools/platform-tools/adb devices:*)",
       "Bash(flutter clean:*)",
-      "Bash(flutter pub get:*)"
+      "Bash(flutter pub get:*)",
+      "Bash(ls:*)",
+      "Bash(python3:*)",
+      "Bash(ruby:*)"
     ]
   }
 }
