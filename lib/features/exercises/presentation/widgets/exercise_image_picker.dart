@@ -35,24 +35,15 @@ class ExerciseImagePicker extends StatelessWidget {
     final bytes = imageBytes;
 
     if (bytes != null) {
-      return _ImagePreview(
-        bytes: bytes,
-        onRemove: onImageRemoved,
-      );
+      return _ImagePreview(bytes: bytes, onRemove: onImageRemoved);
     }
 
-    return _ImagePlaceholder(
-      colorScheme: colorScheme,
-      onTap: _pickImage,
-    );
+    return _ImagePlaceholder(colorScheme: colorScheme, onTap: _pickImage);
   }
 }
 
 class _ImagePreview extends StatelessWidget {
-  const _ImagePreview({
-    required this.bytes,
-    required this.onRemove,
-  });
+  const _ImagePreview({required this.bytes, required this.onRemove});
 
   final Uint8List bytes;
   final VoidCallback onRemove;
@@ -90,10 +81,7 @@ class _ImagePreview extends StatelessWidget {
 }
 
 class _ImagePlaceholder extends StatelessWidget {
-  const _ImagePlaceholder({
-    required this.colorScheme,
-    required this.onTap,
-  });
+  const _ImagePlaceholder({required this.colorScheme, required this.onTap});
 
   final ColorScheme colorScheme;
   final VoidCallback onTap;
@@ -123,8 +111,8 @@ class _ImagePlaceholder extends StatelessWidget {
             Text(
               'Add image',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),

@@ -11,8 +11,7 @@ void main() {
   final authRepository = AuthRepository();
   final exerciseRepository = ExerciseRepository();
   final workoutRepository = WorkoutRepository();
-  final sessionHistoryRepository =
-      SessionHistoryRepository();
+  final sessionHistoryRepository = SessionHistoryRepository();
   final router = buildRouter(
     authRepository: authRepository,
     exerciseRepository: exerciseRepository,

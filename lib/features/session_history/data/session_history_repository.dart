@@ -11,8 +11,7 @@ class SessionHistoryRepository {
 
   /// A listenable snapshot of all session records,
   /// ordered newest-first.
-  ValueListenable<List<SessionRecord>> get records =>
-      _records;
+  ValueListenable<List<SessionRecord>> get records => _records;
 
   /// Adds [record] to the store and notifies listeners.
   void add(SessionRecord record) {

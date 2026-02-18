@@ -6,10 +6,7 @@ import 'widgets/session_record_card.dart';
 
 /// Displays a list of completed workout sessions.
 class SessionHistoryScreen extends StatelessWidget {
-  const SessionHistoryScreen({
-    required this.viewModel,
-    super.key,
-  });
+  const SessionHistoryScreen({required this.viewModel, super.key});
 
   final SessionHistoryViewModel viewModel;
 
@@ -24,15 +21,10 @@ class SessionHistoryScreen extends StatelessWidget {
             return const _EmptyState();
           }
           return ListView.builder(
-            padding: const EdgeInsets.only(
-              top: 8,
-              bottom: 16,
-            ),
+            padding: const EdgeInsets.only(top: 8, bottom: 16),
             itemCount: records.length,
             itemBuilder: (context, index) =>
-                SessionRecordCard(
-              record: records[index],
-            ),
+                SessionRecordCard(record: records[index]),
           );
         },
       ),
@@ -54,9 +46,7 @@ class _EmptyState extends StatelessWidget {
           Icon(
             Icons.history,
             size: 64,
-            color: colorScheme.onSurfaceVariant.withValues(
-              alpha: 0.5,
-            ),
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
           const SizedBox(height: 16),
           Text(
@@ -66,12 +56,9 @@ class _EmptyState extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Complete a workout to see it here',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),

@@ -7,10 +7,7 @@ import 'widgets/exercise_card.dart';
 
 /// Displays all exercises with an empty state and FAB to create.
 class ExerciseListScreen extends StatelessWidget {
-  const ExerciseListScreen({
-    required this.viewModel,
-    super.key,
-  });
+  const ExerciseListScreen({required this.viewModel, super.key});
 
   final ExerciseListViewModel viewModel;
 
@@ -38,10 +35,7 @@ class ExerciseListScreen extends StatelessWidget {
               final exercise = exercises[index];
               return ExerciseCard(
                 exercise: exercise,
-                onDelete: () => _confirmDelete(
-                  context,
-                  exercise,
-                ),
+                onDelete: () => _confirmDelete(context, exercise),
               );
             },
           );
@@ -55,17 +49,12 @@ class ExerciseListScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _confirmDelete(
-    BuildContext context,
-    Exercise exercise,
-  ) async {
+  Future<void> _confirmDelete(BuildContext context, Exercise exercise) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete exercise?'),
-        content: Text(
-          'Are you sure you want to delete "${exercise.title}"?',
-        ),
+        content: Text('Are you sure you want to delete "${exercise.title}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -109,8 +98,8 @@ class _EmptyState extends StatelessWidget {
           Text(
             'Tap + to create your first exercise',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),

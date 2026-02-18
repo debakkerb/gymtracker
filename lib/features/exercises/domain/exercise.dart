@@ -26,12 +26,9 @@ class Exercise {
     return Exercise(
       id: id,
       title: title ?? this.title,
-      description:
-          description != null ? description() : this.description,
-      externalLink:
-          externalLink != null ? externalLink() : this.externalLink,
-      imageBytes:
-          imageBytes != null ? imageBytes() : this.imageBytes,
+      description: description != null ? description() : this.description,
+      externalLink: externalLink != null ? externalLink() : this.externalLink,
+      imageBytes: imageBytes != null ? imageBytes() : this.imageBytes,
     );
   }
 }

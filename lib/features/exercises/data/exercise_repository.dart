@@ -19,8 +19,7 @@ class ExerciseRepository {
 
   /// Removes the exercise with [id] and notifies listeners.
   void remove(String id) {
-    _exercises.value =
-        _exercises.value.where((e) => e.id != id).toList();
+    _exercises.value = _exercises.value.where((e) => e.id != id).toList();
   }
 
   /// Replaces the exercise with the same [Exercise.id].

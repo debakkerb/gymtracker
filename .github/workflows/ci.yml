@@ -9,7 +9,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FLUTTER_VERSION: "3.32.4"
   JAVA_VERSION: "17"
 
 jobs:
@@ -22,7 +21,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
           cache: true
 
       - name: Install dependencies
@@ -43,14 +42,19 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
 
       - name: Run tests
-        run: flutter test --coverage
+        run: |
+          if [ -d test ]; then
+            flutter test --coverage
+          else
+            echo "No test directory found — skipping"
+          fi
 
       - name: Upload coverage
         if: always()
@@ -69,7 +73,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
           cache: true
 
       - name: Install dependencies
@@ -108,7 +112,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
           cache: true
 
       - name: Install dependencies
@@ -127,7 +131,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
           cache: true
 
       - name: Install dependencies
@@ -146,7 +150,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
           cache: true
 
       - name: Install dependencies

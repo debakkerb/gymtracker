@@ -40,23 +40,16 @@ class WorkoutListScreen extends StatelessWidget {
             return const _EmptyState();
           }
           return ListView.builder(
-            padding: const EdgeInsets.only(
-              top: 8,
-              bottom: 88,
-            ),
+            padding: const EdgeInsets.only(top: 8, bottom: 88),
             itemCount: workouts.length,
             itemBuilder: (context, index) {
               final workout = workouts[index];
               return WorkoutCard(
                 workout: workout,
                 exerciseRepository: exerciseRepository,
-                onDelete: () => _confirmDelete(
-                  context,
-                  workout,
-                ),
-                onStartSession: () => context.go(
-                  '/sessions/active/${workout.id}',
-                ),
+                onDelete: () => _confirmDelete(context, workout),
+                onStartSession: () =>
+                    context.go('/sessions/active/${workout.id}'),
               );
             },
           );
@@ -66,17 +59,12 @@ class WorkoutListScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _confirmDelete(
-    BuildContext context,
-    Workout workout,
-  ) async {
+  Future<void> _confirmDelete(BuildContext context, Workout workout) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete workout?'),
-        content: Text(
-          'Are you sure you want to delete "${workout.title}"?',
-        ),
+        content: Text('Are you sure you want to delete "${workout.title}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -109,9 +97,7 @@ class _EmptyState extends StatelessWidget {
           Icon(
             Icons.calendar_today,
             size: 64,
-            color: colorScheme.onSurfaceVariant.withValues(
-              alpha: 0.5,
-            ),
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
           const SizedBox(height: 16),
           Text(
@@ -122,8 +108,8 @@ class _EmptyState extends StatelessWidget {
           Text(
             'Use the buttons below to get started',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -149,16 +135,12 @@ class _BottomActions extends StatelessWidget {
                 icon: const Icon(Icons.fitness_center),
                 label: const Text('Exercises'),
                 style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  backgroundColor:
-                      colorScheme.secondaryContainer,
-                  foregroundColor:
-                      colorScheme.onSecondaryContainer,
+                  backgroundColor: colorScheme.secondaryContainer,
+                  foregroundColor: colorScheme.onSecondaryContainer,
                 ),
               ),
             ),
@@ -169,16 +151,12 @@ class _BottomActions extends StatelessWidget {
                 icon: const Icon(Icons.history),
                 label: const Text('History'),
                 style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  backgroundColor:
-                      colorScheme.tertiaryContainer,
-                  foregroundColor:
-                      colorScheme.onTertiaryContainer,
+                  backgroundColor: colorScheme.tertiaryContainer,
+                  foregroundColor: colorScheme.onTertiaryContainer,
                 ),
               ),
             ),
@@ -189,9 +167,7 @@ class _BottomActions extends StatelessWidget {
                 icon: const Icon(Icons.add),
                 label: const Text('Workout'),
                 style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),

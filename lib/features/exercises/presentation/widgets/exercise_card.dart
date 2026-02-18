@@ -24,10 +24,7 @@ class ExerciseCard extends StatelessWidget {
 
     return Card(
       elevation: 1,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 6,
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       clipBehavior: Clip.antiAlias,
       child: ExpansionTile(
         leading: _Avatar(exercise: exercise),
@@ -39,20 +36,13 @@ class ExerciseCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (exercise.description != null) ...[
-                  Text(
-                    exercise.description!,
-                    style: textTheme.bodyMedium,
-                  ),
+                  Text(exercise.description!, style: textTheme.bodyMedium),
                   const SizedBox(height: 12),
                 ],
                 if (exercise.externalLink != null) ...[
                   Row(
                     children: [
-                      Icon(
-                        Icons.link,
-                        size: 16,
-                        color: colorScheme.primary,
-                      ),
+                      Icon(Icons.link, size: 16, color: colorScheme.primary),
                       const SizedBox(width: 4),
                       Flexible(
                         child: Text(
@@ -72,8 +62,7 @@ class ExerciseCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton.icon(
-                      onPressed: () => context
-                          .go('/exercises/${exercise.id}'),
+                      onPressed: () => context.go('/exercises/${exercise.id}'),
                       icon: const Icon(Icons.edit_outlined),
                       label: const Text('Edit'),
                     ),
@@ -86,9 +75,7 @@ class ExerciseCard extends StatelessWidget {
                       ),
                       label: Text(
                         'Delete',
-                        style: TextStyle(
-                          color: colorScheme.error,
-                        ),
+                        style: TextStyle(color: colorScheme.error),
                       ),
                     ),
                   ],

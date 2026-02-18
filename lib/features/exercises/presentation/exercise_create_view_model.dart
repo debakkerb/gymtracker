@@ -7,7 +7,7 @@ import '../domain/exercise.dart';
 /// Manages the form state for creating a new exercise.
 class ExerciseCreateViewModel extends ChangeNotifier {
   ExerciseCreateViewModel({required ExerciseRepository repository})
-      : _repository = repository;
+    : _repository = repository;
 
   final ExerciseRepository _repository;
   static const _uuid = Uuid();
@@ -54,10 +54,8 @@ class ExerciseCreateViewModel extends ChangeNotifier {
     final exercise = Exercise(
       id: _uuid.v4(),
       title: _title.trim(),
-      description:
-          _description.trim().isEmpty ? null : _description.trim(),
-      externalLink:
-          _externalLink.trim().isEmpty ? null : _externalLink.trim(),
+      description: _description.trim().isEmpty ? null : _description.trim(),
+      externalLink: _externalLink.trim().isEmpty ? null : _externalLink.trim(),
       imageBytes: _imageBytes,
     );
     _repository.add(exercise);
