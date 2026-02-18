@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter --version:*)",
+      "Bash(export JAVA_HOME=\"/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home\")",
+      "Bash(flutter build web:*)",
+      "Bash(flutter run:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter devices:*)",
+      "Bash(flutter emulators:*)",
+      "Bash(adb wait-for-device:*)",
+      "Bash(adb shell:*)",
+      "Bash(export ANDROID_HOME=\"$HOME/Library/Android/sdk\")",
+      "Bash(export PATH:*)",
+      "Bash(/opt/homebrew/share/android-commandlinetools/platform-tools/adb wait-for-device:*)",
+      "Bash(/opt/homebrew/share/android-commandlinetools/platform-tools/adb shell:*)",
+      "Bash(/opt/homebrew/share/android-commandlinetools/platform-tools/adb devices:*)",
+      "Bash(flutter clean:*)",
+      "Bash(flutter pub get:*)"
+    ]
+  }
+}
