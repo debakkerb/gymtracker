@@ -18,9 +18,9 @@ class ApiClient {
     required String baseUrl,
     required TokenStorage tokenStorage,
     http.Client? httpClient,
-  })  : _base = Uri.parse('$baseUrl/api/v1'),
-        _tokenStorage = tokenStorage,
-        _http = httpClient ?? http.Client();
+  }) : _base = Uri.parse('$baseUrl/api/v1'),
+       _tokenStorage = tokenStorage,
+       _http = httpClient ?? http.Client();
 
   final Uri _base;
   final TokenStorage _tokenStorage;
@@ -28,8 +28,7 @@ class ApiClient {
 
   // ── HTTP verbs ────────────────────────────────────────────────────────────
 
-  Future<dynamic> get(String path) =>
-      _send('GET', path);
+  Future<dynamic> get(String path) => _send('GET', path);
 
   Future<dynamic> post(String path, {Object? body}) =>
       _send('POST', path, body: body);
@@ -37,16 +36,11 @@ class ApiClient {
   Future<dynamic> put(String path, {Object? body}) =>
       _send('PUT', path, body: body);
 
-  Future<dynamic> delete(String path) =>
-      _send('DELETE', path);
+  Future<dynamic> delete(String path) => _send('DELETE', path);
 
   // ── Internals ─────────────────────────────────────────────────────────────
 
-  Future<dynamic> _send(
-    String method,
-    String path, {
-    Object? body,
-  }) async {
+  Future<dynamic> _send(String method, String path, {Object? body}) async {
     final uri = _base.resolve(path.startsWith('/') ? path.substring(1) : path);
     final headers = await _buildHeaders();
 
@@ -88,8 +82,8 @@ class ApiClient {
       409 => throw ConflictException(_errorMessage(body)),
       422 => throw ValidationException(_errorMessage(body)),
       _ => throw ServerException(
-          'Unexpected response ${response.statusCode}: ${response.body}',
-        ),
+        'Unexpected response ${response.statusCode}: ${response.body}',
+      ),
     };
   }
 
