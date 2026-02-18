@@ -29,7 +29,9 @@
       "Bash(git -C:*)",
       "Bash(dart pub get:*)",
       "Bash(dart analyze:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(dart format:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
