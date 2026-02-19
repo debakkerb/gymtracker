@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'register_view_model.dart';
 
@@ -46,21 +45,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _onRegister() {
+  Future<void> _onRegister() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final error = _vm.register();
+    final error = await _vm.register();
+    if (!mounted) return;
     if (error != null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(error)));
-      return;
     }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Registration successful — please log in')),
-    );
-    context.go('/login');
+    // On success the backend signs the user in immediately; GoRouter's
+    // refreshListenable redirects to '/' when currentUser becomes non-null.
   }
 
   Future<void> _pickDateOfBirth() async {

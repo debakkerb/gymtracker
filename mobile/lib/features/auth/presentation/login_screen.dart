@@ -39,15 +39,15 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _onLogin() {
-    final error = _vm.login();
+  Future<void> _onLogin() async {
+    final error = await _vm.login();
+    if (!mounted) return;
     if (error != null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(error)));
-      return;
     }
-    context.go('/');
+    // GoRouter's refreshListenable handles navigation when currentUser changes.
   }
 
   @override

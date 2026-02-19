@@ -1,16 +1,14 @@
 import 'package:flutter/foundation.dart';
-import 'package:uuid/uuid.dart';
 
+import '../../../core/api/api_exception.dart';
 import '../data/auth_repository.dart';
-import '../domain/user.dart';
 
-/// Manages form state for the registration screen.
+/// Manages form state and the registration network call for [RegisterScreen].
 class RegisterViewModel extends ChangeNotifier {
   RegisterViewModel({required AuthRepository repository})
     : _repository = repository;
 
   final AuthRepository _repository;
-  static const _uuid = Uuid();
 
   static final _emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
 
@@ -18,19 +16,24 @@ class RegisterViewModel extends ChangeNotifier {
   String _password = '';
   String _confirmPassword = '';
   DateTime? _dateOfBirth;
+  bool _isLoading = false;
 
-  /// The current password value, used by the confirm validator.
+  /// The current password value, used by the confirm-password validator.
   String get password => _password;
 
   /// The selected date of birth, or `null` if not set.
   DateTime? get dateOfBirth => _dateOfBirth;
+
+  /// Whether a registration request is in flight.
+  bool get isLoading => _isLoading;
 
   /// Whether the form has enough valid data to submit.
   bool get canSubmit =>
       _email.trim().isNotEmpty &&
       _emailRegex.hasMatch(_email.trim()) &&
       _password.length >= 8 &&
-      _password == _confirmPassword;
+      _password == _confirmPassword &&
+      !_isLoading;
 
   set email(String value) {
     _email = value;
@@ -56,25 +59,27 @@ class RegisterViewModel extends ChangeNotifier {
   /// Clears the date of birth.
   void clearDateOfBirth() => setDateOfBirth(null);
 
-  /// Attempts to register the user.
+  /// Attempts to register and sign in.
   ///
-  /// Returns `null` on success, or an error message on failure.
-  String? register() {
+  /// Returns `null` on success, or a human-readable error message on failure.
+  /// On success the backend issues a token, [AuthRepository.currentUser] is
+  /// updated, and GoRouter's redirect guard navigates to the home screen.
+  Future<String?> register() async {
     if (!canSubmit) return 'Please fill in all required fields';
-
-    final email = _email.trim().toLowerCase();
-    if (_repository.findByEmail(email) != null) {
-      return 'This email is already registered';
-    }
-
-    _repository.add(
-      User(
-        id: _uuid.v4(),
-        email: email,
-        password: _password,
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await _repository.register(
+        _email.trim(),
+        _password,
         dateOfBirth: _dateOfBirth,
-      ),
-    );
-    return null;
+      );
+      return null;
+    } on ApiException catch (e) {
+      return e.message;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }
