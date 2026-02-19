@@ -1,0 +1,6 @@
+.dart_tool/
+.git/
+build/
+test/
+*.db
+*.md

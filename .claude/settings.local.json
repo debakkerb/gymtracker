@@ -26,7 +26,12 @@
       "Bash(git -C /Users/debakkerb/projects/mobile/gymtracker status)",
       "Bash(git -C /Users/debakkerb/projects/mobile/gymtracker diff)",
       "Bash(git -C /Users/debakkerb/projects/mobile/gymtracker add .github/workflows/ci.yml lib/)",
-      "Bash(git -C:*)"
+      "Bash(git -C:*)",
+      "Bash(dart pub get:*)",
+      "Bash(dart analyze:*)",
+      "Bash(git add:*)",
+      "Bash(dart format:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
