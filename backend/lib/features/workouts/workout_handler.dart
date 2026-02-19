@@ -65,7 +65,8 @@ class WorkoutHandler {
         );
       }
       exercises.add(
-          {'exercise_id': exerciseId, 'repetitions': reps, 'series': series});
+        {'exercise_id': exerciseId, 'repetitions': reps, 'series': series},
+      );
     }
 
     final id = _uuid.v4();
