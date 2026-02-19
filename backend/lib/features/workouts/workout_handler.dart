@@ -64,7 +64,8 @@ class WorkoutHandler {
           'Each exercise must have exercise_id, repetitions, and series',
         );
       }
-      exercises.add({'exercise_id': exerciseId, 'repetitions': reps, 'series': series});
+      exercises.add(
+          {'exercise_id': exerciseId, 'repetitions': reps, 'series': series});
     }
 
     final id = _uuid.v4();
@@ -77,8 +78,10 @@ class WorkoutHandler {
     );
 
     final created = _repo.findByIdAndUser(id, request.userId)!;
-    final createdExercises = _repo.findExercises(id).map(_exerciseRowToMap).toList();
-    return r.created({..._workoutRowToMap(created), 'exercises': createdExercises});
+    final createdExercises =
+        _repo.findExercises(id).map(_exerciseRowToMap).toList();
+    return r
+        .created({..._workoutRowToMap(created), 'exercises': createdExercises});
   }
 
   /// `DELETE /api/v1/workouts/:id`

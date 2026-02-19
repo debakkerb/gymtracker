@@ -29,10 +29,8 @@ class ExerciseHandler {
 
   /// `GET /api/v1/exercises`
   Response list(Request request) {
-    final exercises = _repo
-        .findAllByUser(request.userId)
-        .map(_rowToMap)
-        .toList();
+    final exercises =
+        _repo.findAllByUser(request.userId).map(_rowToMap).toList();
     return r.ok(exercises);
   }
 

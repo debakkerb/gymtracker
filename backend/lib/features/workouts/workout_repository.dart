@@ -9,8 +9,7 @@ class WorkoutRepository {
   final AppDatabase _db;
 
   /// Returns all workouts owned by [userId], without their exercise lists.
-  List<Row> findAllByUser(String userId) =>
-      _db.db.select(
+  List<Row> findAllByUser(String userId) => _db.db.select(
         'SELECT id, title, description, created_at '
         'FROM workouts WHERE user_id = ? ORDER BY created_at ASC',
         [userId],
@@ -27,8 +26,7 @@ class WorkoutRepository {
   }
 
   /// Returns the ordered exercises for [workoutId].
-  List<Row> findExercises(String workoutId) =>
-      _db.db.select(
+  List<Row> findExercises(String workoutId) => _db.db.select(
         'SELECT exercise_id, repetitions, series, sort_order '
         'FROM workout_exercises WHERE workout_id = ? ORDER BY sort_order ASC',
         [workoutId],

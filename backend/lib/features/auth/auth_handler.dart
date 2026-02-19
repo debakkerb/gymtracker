@@ -17,8 +17,7 @@ import 'auth_repository.dart';
 /// - `POST /login`    — authenticate, returns token + user
 /// - `POST /logout`   — authenticated; client discards the token
 class AuthHandler {
-  AuthHandler(this._config, AppDatabase db)
-      : _repo = AuthRepository(db);
+  AuthHandler(this._config, AppDatabase db) : _repo = AuthRepository(db);
 
   final AppConfig _config;
   final AuthRepository _repo;

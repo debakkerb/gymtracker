@@ -9,8 +9,7 @@ class ExerciseRepository {
   final AppDatabase _db;
 
   /// Returns all exercises owned by [userId].
-  List<Row> findAllByUser(String userId) =>
-      _db.db.select(
+  List<Row> findAllByUser(String userId) => _db.db.select(
         'SELECT id, title, description, external_link, image_url, created_at '
         'FROM exercises WHERE user_id = ? ORDER BY created_at ASC',
         [userId],

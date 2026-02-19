@@ -9,16 +9,14 @@ class SessionRepository {
   final AppDatabase _db;
 
   /// Returns all sessions owned by [userId], newest first.
-  List<Row> findAllByUser(String userId) =>
-      _db.db.select(
+  List<Row> findAllByUser(String userId) => _db.db.select(
         'SELECT id, workout_title, date, created_at '
         'FROM sessions WHERE user_id = ? ORDER BY date DESC',
         [userId],
       );
 
   /// Returns the ordered exercise records for [sessionId].
-  List<Row> findExercises(String sessionId) =>
-      _db.db.select(
+  List<Row> findExercises(String sessionId) => _db.db.select(
         'SELECT id, exercise_name, repetitions, series, sort_order '
         'FROM session_exercises WHERE session_id = ? ORDER BY sort_order ASC',
         [sessionId],

@@ -70,7 +70,8 @@ class SessionHandler {
           'Each exercise must have exercise_name, repetitions, and series',
         );
       }
-      exercises.add({'exercise_name': name, 'repetitions': reps, 'series': series});
+      exercises
+          .add({'exercise_name': name, 'repetitions': reps, 'series': series});
     }
 
     final id = _uuid.v4();
