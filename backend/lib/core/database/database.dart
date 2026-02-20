@@ -67,13 +67,23 @@ class AppDatabase {
 
     _db.execute('''
       CREATE TABLE IF NOT EXISTS sessions (
-        id            TEXT PRIMARY KEY,
-        user_id       TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-        workout_title TEXT NOT NULL,
-        date          TEXT NOT NULL,
-        created_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+        id               TEXT    PRIMARY KEY,
+        user_id          TEXT    NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        workout_title    TEXT    NOT NULL,
+        date             TEXT    NOT NULL,
+        duration_seconds INTEGER NOT NULL DEFAULT 0,
+        created_at       TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
       )
     ''');
+
+    // Idempotent migration: add duration_seconds to existing databases.
+    try {
+      _db.execute(
+        'ALTER TABLE sessions ADD COLUMN duration_seconds INTEGER NOT NULL DEFAULT 0',
+      );
+    } catch (_) {
+      // Column already exists — nothing to do.
+    }
 
     // session_exercises stores a denormalised snapshot: exercise names are
     // copied at save time so history is stable even if exercises are renamed.

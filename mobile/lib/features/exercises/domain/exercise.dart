@@ -16,6 +16,22 @@ class Exercise {
   final String? externalLink;
   final Uint8List? imageBytes;
 
+  factory Exercise.fromJson(Map<String, dynamic> json) => Exercise(
+    id: json['id'] as String,
+    title: json['title'] as String,
+    description: json['description'] as String?,
+    externalLink: json['external_link'] as String?,
+  );
+
+  /// Serialises for API create/update requests.
+  ///
+  /// The [id] field is intentionally omitted — it is assigned by the server.
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    if (description != null) 'description': description,
+    if (externalLink != null) 'external_link': externalLink,
+  };
+
   /// Creates a copy with the given fields replaced.
   Exercise copyWith({
     String? title,

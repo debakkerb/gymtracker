@@ -18,7 +18,7 @@ class ApiClient {
     required String baseUrl,
     required TokenStorage tokenStorage,
     http.Client? httpClient,
-  }) : _base = Uri.parse('$baseUrl/api/v1'),
+  }) : _base = Uri.parse('$baseUrl/api/v1/'),
        _tokenStorage = tokenStorage,
        _http = httpClient ?? http.Client();
 

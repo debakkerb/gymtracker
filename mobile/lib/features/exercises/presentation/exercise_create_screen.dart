@@ -25,9 +25,15 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
     super.dispose();
   }
 
-  void _onSave() {
+  Future<void> _onSave() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_vm.save()) {
+    final error = await _vm.save();
+    if (!mounted) return;
+    if (error != null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error)));
+    } else {
       context.go('/exercises');
     }
   }

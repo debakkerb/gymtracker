@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../core/api/api_exception.dart';
 import '../data/workout_repository.dart';
 import '../domain/workout.dart';
 import '../domain/workout_exercise.dart';
@@ -16,6 +17,7 @@ class WorkoutCreateViewModel extends ChangeNotifier {
   String _title = '';
   String _description = '';
   final List<WorkoutExercise> _exercises = [];
+  bool _isLoading = false;
 
   /// The current list of exercises in this workout.
   List<WorkoutExercise> get exercises => List.unmodifiable(_exercises);
@@ -23,7 +25,8 @@ class WorkoutCreateViewModel extends ChangeNotifier {
   /// Whether the form has enough data to submit.
   ///
   /// Requires a non-empty title and at least one exercise.
-  bool get canSubmit => _title.trim().isNotEmpty && _exercises.isNotEmpty;
+  bool get canSubmit =>
+      _title.trim().isNotEmpty && _exercises.isNotEmpty && !_isLoading;
 
   set title(String value) {
     _title = value;
@@ -47,17 +50,28 @@ class WorkoutCreateViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Saves the workout and returns `true` on success.
-  bool save() {
-    if (!canSubmit) return false;
-
-    final workout = Workout(
-      id: _uuid.v4(),
-      title: _title.trim(),
-      description: _description.trim().isEmpty ? null : _description.trim(),
-      exercises: List.unmodifiable(_exercises),
-    );
-    _repository.add(workout);
-    return true;
+  /// Saves the workout to the server.
+  ///
+  /// Returns `null` on success, or a human-readable error message on failure.
+  Future<String?> save() async {
+    if (!canSubmit) return null;
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await _repository.add(
+        Workout(
+          id: _uuid.v4(),
+          title: _title.trim(),
+          description: _description.trim().isEmpty ? null : _description.trim(),
+          exercises: List.unmodifiable(_exercises),
+        ),
+      );
+      return null;
+    } on ApiException catch (e) {
+      return e.message;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

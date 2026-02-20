@@ -29,9 +29,35 @@ Future<void> main() async {
   // Restore any persisted session before the first frame is drawn.
   await authRepository.init();
 
-  final exerciseRepository = ExerciseRepository();
-  final workoutRepository = WorkoutRepository();
-  final sessionHistoryRepository = SessionHistoryRepository();
+  final exerciseRepository = ExerciseRepository(apiClient: apiClient);
+  final workoutRepository = WorkoutRepository(apiClient: apiClient);
+  final sessionHistoryRepository = SessionHistoryRepository(
+    apiClient: apiClient,
+  );
+
+  // Load or clear data whenever the auth state changes (login, logout,
+  // session restore). Using a listener means this runs for all auth events
+  // without coupling AuthRepository to the other repositories.
+  authRepository.currentUser.addListener(() {
+    if (authRepository.currentUser.value != null) {
+      exerciseRepository.load().catchError((_) {});
+      workoutRepository.load().catchError((_) {});
+      sessionHistoryRepository.load().catchError((_) {});
+    } else {
+      exerciseRepository.clear();
+      workoutRepository.clear();
+      sessionHistoryRepository.clear();
+    }
+  });
+
+  // Pre-load immediately if a session was already restored above.
+  if (authRepository.currentUser.value != null) {
+    await Future.wait([
+      exerciseRepository.load().catchError((_) {}),
+      workoutRepository.load().catchError((_) {}),
+      sessionHistoryRepository.load().catchError((_) {}),
+    ]);
+  }
 
   final router = buildRouter(
     authRepository: authRepository,

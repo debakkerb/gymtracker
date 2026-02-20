@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../../domain/session_record.dart';
 
+/// Formats [d] as a short human-readable string, e.g. "43 min" or "1h 5min".
+String _formatDuration(Duration d) {
+  final h = d.inHours;
+  final m = d.inMinutes.remainder(60);
+  if (h > 0) return '${h}h ${m}min';
+  if (m > 0) return '$m min';
+  return '${d.inSeconds}s';
+}
+
 /// An expandable card that summarises a completed session.
 class SessionRecordCard extends StatelessWidget {
   const SessionRecordCard({required this.record, super.key});
@@ -14,6 +23,7 @@ class SessionRecordCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final localizations = MaterialLocalizations.of(context);
     final formattedDate = localizations.formatMediumDate(record.date);
+    final formattedDuration = _formatDuration(record.duration);
 
     return Card(
       elevation: 1,
@@ -28,7 +38,10 @@ class SessionRecordCard extends StatelessWidget {
           ),
         ),
         title: Text(record.workoutTitle),
-        subtitle: Text(formattedDate, style: textTheme.bodySmall),
+        subtitle: Text(
+          '$formattedDate \u00b7 $formattedDuration',
+          style: textTheme.bodySmall,
+        ),
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),

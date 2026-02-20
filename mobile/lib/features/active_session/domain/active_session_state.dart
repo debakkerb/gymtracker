@@ -6,6 +6,7 @@ class ActiveSessionState {
     this.isResting = false,
     this.remainingSeconds = 0,
     this.isComplete = false,
+    this.elapsedSeconds = 0,
   });
 
   /// Zero-based index of the current exercise.
@@ -22,4 +23,7 @@ class ActiveSessionState {
 
   /// Whether all exercises and sets have been completed.
   final bool isComplete;
+
+  /// Total seconds elapsed since the session started.
+  final int elapsedSeconds;
 }

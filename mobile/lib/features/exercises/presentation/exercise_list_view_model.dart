@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../core/api/api_exception.dart';
 import '../data/exercise_repository.dart';
 import '../domain/exercise.dart';
 
@@ -14,5 +15,14 @@ class ExerciseListViewModel {
   ValueListenable<List<Exercise>> get exercises => _repository.exercises;
 
   /// Deletes the exercise with [id].
-  void delete(String id) => _repository.remove(id);
+  ///
+  /// Returns `null` on success, or a human-readable error message on failure.
+  Future<String?> delete(String id) async {
+    try {
+      await _repository.remove(id);
+      return null;
+    } on ApiException catch (e) {
+      return e.message;
+    }
+  }
 }

@@ -78,7 +78,12 @@ class WorkoutListScreen extends StatelessWidget {
       ),
     );
     if (confirmed == true) {
-      viewModel.delete(workout.id);
+      final error = await viewModel.delete(workout.id);
+      if (error != null && context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error)));
+      }
     }
   }
 }

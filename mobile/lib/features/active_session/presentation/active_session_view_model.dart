@@ -23,7 +23,12 @@ class ActiveSessionViewModel extends ChangeNotifier {
     required SessionHistoryRepository historyRepository,
   }) : _exerciseRepository = exerciseRepository,
        _historyRepository = historyRepository,
-       date = DateTime.now();
+       date = DateTime.now() {
+    _elapsedTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _elapsedSeconds++;
+      notifyListeners();
+    });
+  }
 
   final Workout workout;
   final ExerciseRepository _exerciseRepository;
@@ -37,7 +42,9 @@ class ActiveSessionViewModel extends ChangeNotifier {
   bool _isResting = false;
   int _remainingSeconds = 0;
   bool _isComplete = false;
+  int _elapsedSeconds = 0;
   Timer? _timer;
+  Timer? _elapsedTimer;
 
   /// A snapshot of the current session state.
   ActiveSessionState get state => ActiveSessionState(
@@ -46,6 +53,7 @@ class ActiveSessionViewModel extends ChangeNotifier {
     isResting: _isResting,
     remainingSeconds: _remainingSeconds,
     isComplete: _isComplete,
+    elapsedSeconds: _elapsedSeconds,
   );
 
   /// The exercise currently being performed.
@@ -61,8 +69,10 @@ class ActiveSessionViewModel extends ChangeNotifier {
     final isLastExercise = _exerciseIndex >= workout.exercises.length - 1;
 
     if (isLastSet && isLastExercise) {
-      _saveSession();
+      _elapsedTimer?.cancel();
+      _elapsedTimer = null;
       _isComplete = true;
+      _saveSession(); // fire-and-forget; optimistic local update is synchronous
       notifyListeners();
       return;
     }
@@ -84,7 +94,7 @@ class ActiveSessionViewModel extends ChangeNotifier {
     return exercise?.title ?? 'Unknown exercise';
   }
 
-  void _saveSession() {
+  Future<void> _saveSession() async {
     final exercises = workout.exercises.map(
       (e) => SessionExerciseRecord(
         exerciseName: exerciseName(e.exerciseId),
@@ -92,14 +102,19 @@ class ActiveSessionViewModel extends ChangeNotifier {
         series: e.series,
       ),
     );
-    _historyRepository.add(
-      SessionRecord(
-        id: const Uuid().v4(),
-        workoutTitle: workout.title,
-        date: date,
-        exercises: exercises.toList(),
-      ),
-    );
+    try {
+      await _historyRepository.add(
+        SessionRecord(
+          id: const Uuid().v4(),
+          workoutTitle: workout.title,
+          date: date,
+          duration: Duration(seconds: _elapsedSeconds),
+          exercises: exercises.toList(),
+        ),
+      );
+    } catch (_) {
+      // Best-effort — the session is already shown locally.
+    }
   }
 
   void _startRestTimer() {
@@ -138,6 +153,7 @@ class ActiveSessionViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _cancelTimer();
+    _elapsedTimer?.cancel();
     super.dispose();
   }
 }

@@ -45,6 +45,7 @@ class SessionHandler {
 
     final workoutTitle = (body['workout_title'] as String?)?.trim();
     final date = body['date'] as String?;
+    final durationSeconds = (body['duration_seconds'] as num?)?.toInt() ?? 0;
 
     if (workoutTitle == null || workoutTitle.isEmpty) {
       return r.unprocessable('workout_title is required');
@@ -80,6 +81,7 @@ class SessionHandler {
       userId: request.userId,
       workoutTitle: workoutTitle,
       date: date,
+      durationSeconds: durationSeconds,
       exercises: exercises,
     );
 
@@ -89,6 +91,7 @@ class SessionHandler {
       'id': id,
       'workout_title': workoutTitle,
       'date': date,
+      'duration_seconds': durationSeconds,
       'exercises': sessionExercises,
     });
   }
@@ -97,6 +100,7 @@ class SessionHandler {
         'id': row['id'],
         'workout_title': row['workout_title'],
         'date': row['date'],
+        'duration_seconds': row['duration_seconds'],
         'created_at': row['created_at'],
       };
 

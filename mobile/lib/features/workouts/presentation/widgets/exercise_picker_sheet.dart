@@ -61,10 +61,20 @@ class _ExercisePickerSheetState extends State<_ExercisePickerSheet> {
       builder: (context) => const _QuickCreateDialog(),
     );
     if (title == null || title.trim().isEmpty) return;
+    if (!mounted) return;
 
-    final exercise = Exercise(id: _uuid.v4(), title: title.trim());
-    widget.exerciseRepository.add(exercise);
-    setState(() => _selected = exercise);
+    try {
+      final created = await widget.exerciseRepository.add(
+        Exercise(id: _uuid.v4(), title: title.trim()),
+      );
+      if (mounted) setState(() => _selected = created);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not create exercise: $e')),
+        );
+      }
+    }
   }
 
   @override

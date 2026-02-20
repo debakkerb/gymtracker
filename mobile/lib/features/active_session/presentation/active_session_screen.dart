@@ -66,65 +66,116 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
           router.go('/');
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Session \u2014 $formattedDate'),
-          leading: IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () async {
-              final router = GoRouter.of(context);
-              if (vm.state.isComplete) {
-                router.go('/');
-                return;
+      child: ListenableBuilder(
+        listenable: vm,
+        builder: (context, _) {
+          final state = vm.state;
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Session \u2014 $formattedDate'),
+              leading: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () async {
+                  final router = GoRouter.of(context);
+                  if (state.isComplete) {
+                    router.go('/');
+                    return;
+                  }
+                  final shouldExit = await _confirmExit();
+                  if (shouldExit && mounted) {
+                    router.go('/');
+                  }
+                },
+              ),
+              actions: [
+                if (!state.isComplete)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: _ElapsedDisplay(seconds: state.elapsedSeconds),
+                  ),
+              ],
+            ),
+            body: () {
+              if (state.isComplete) {
+                return _CompletionView(
+                  elapsedSeconds: state.elapsedSeconds,
+                  onDone: () => context.go('/'),
+                );
               }
-              final shouldExit = await _confirmExit();
-              if (shouldExit && mounted) {
-                router.go('/');
+
+              final exercise = vm.currentExercise;
+              final name = vm.exerciseName(exercise.exerciseId);
+              final totalExercises = vm.workout.exercises.length;
+
+              if (state.isResting) {
+                return _RestView(
+                  exerciseName: name,
+                  remainingSeconds: state.remainingSeconds,
+                  onSkip: vm.skipRest,
+                );
               }
-            },
-          ),
-        ),
-        body: ListenableBuilder(
-          listenable: vm,
-          builder: (context, _) {
-            final state = vm.state;
 
-            if (state.isComplete) {
-              return _CompletionView(onDone: () => context.go('/'));
-            }
-
-            final exercise = vm.currentExercise;
-            final name = vm.exerciseName(exercise.exerciseId);
-            final totalExercises = vm.workout.exercises.length;
-
-            if (state.isResting) {
-              return _RestView(
+              return _ExerciseView(
                 exerciseName: name,
-                remainingSeconds: state.remainingSeconds,
-                onSkip: vm.skipRest,
+                currentSet: state.currentSet,
+                totalSets: exercise.series,
+                exerciseNumber: state.exerciseIndex + 1,
+                totalExercises: totalExercises,
+                repetitions: exercise.repetitions,
+                onComplete: vm.completeSet,
               );
-            }
-
-            return _ExerciseView(
-              exerciseName: name,
-              currentSet: state.currentSet,
-              totalSets: exercise.series,
-              exerciseNumber: state.exerciseIndex + 1,
-              totalExercises: totalExercises,
-              repetitions: exercise.repetitions,
-              onComplete: vm.completeSet,
-            );
-          },
-        ),
+            }(),
+          );
+        },
       ),
     );
   }
 }
 
+/// Formats [seconds] as `MM:SS` or `H:MM:SS` when over an hour.
+String _formatElapsed(int seconds) {
+  final h = seconds ~/ 3600;
+  final m = (seconds % 3600) ~/ 60;
+  final s = seconds % 60;
+  final mm = m.toString().padLeft(2, '0');
+  final ss = s.toString().padLeft(2, '0');
+  return h > 0 ? '$h:$mm:$ss' : '$mm:$ss';
+}
+
+class _ElapsedDisplay extends StatelessWidget {
+  const _ElapsedDisplay({required this.seconds});
+
+  final int seconds;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.timer_outlined,
+          size: 16,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          _formatElapsed(seconds),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            fontFeatures: const [FontFeature.tabularFigures()],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _CompletionView extends StatelessWidget {
-  const _CompletionView({required this.onDone});
+  const _CompletionView({required this.onDone, required this.elapsedSeconds});
 
   final VoidCallback onDone;
+  final int elapsedSeconds;
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +199,24 @@ class _CompletionView extends StatelessWidget {
               style: textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.timer_outlined,
+                  size: 18,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  _formatElapsed(elapsedSeconds),
+                  style: textTheme.titleMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 32),
             FilledButton.icon(

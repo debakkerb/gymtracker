@@ -10,7 +10,7 @@ class SessionRepository {
 
   /// Returns all sessions owned by [userId], newest first.
   List<Row> findAllByUser(String userId) => _db.db.select(
-        'SELECT id, workout_title, date, created_at '
+        'SELECT id, workout_title, date, duration_seconds, created_at '
         'FROM sessions WHERE user_id = ? ORDER BY date DESC',
         [userId],
       );
@@ -28,11 +28,13 @@ class SessionRepository {
     required String userId,
     required String workoutTitle,
     required String date,
+    required int durationSeconds,
     required List<Map<String, dynamic>> exercises,
   }) {
     _db.db.execute(
-      'INSERT INTO sessions (id, user_id, workout_title, date) VALUES (?, ?, ?, ?)',
-      [id, userId, workoutTitle, date],
+      'INSERT INTO sessions (id, user_id, workout_title, date, duration_seconds) '
+      'VALUES (?, ?, ?, ?, ?)',
+      [id, userId, workoutTitle, date, durationSeconds],
     );
 
     for (var i = 0; i < exercises.length; i++) {
