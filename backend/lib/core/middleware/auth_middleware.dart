@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:shelf/shelf.dart';
 
@@ -12,15 +14,22 @@ import '../http/json_response.dart' as r;
 /// On failure, returns 401 before the inner handler is called.
 Middleware authMiddleware(AppConfig config) {
   return (Handler inner) => (Request request) {
+        const bearerPrefix = 'Bearer ';
         final authHeader = request.headers['authorization'] ?? '';
-        if (!authHeader.startsWith('Bearer ')) {
+        if (!authHeader.startsWith(bearerPrefix)) {
+          developer.log(
+            'Authorization header missing or does not start with "$bearerPrefix". '
+            'Got: "${authHeader.isEmpty ? '(empty)' : authHeader}"',
+            name: 'auth_middleware',
+            level: 900, // WARNING
+          );
           return r.unauthorized(
             'Missing or invalid Authorization header. '
             'Expected: Authorization: Bearer <token>',
           );
         }
 
-        final token = authHeader.substring(7);
+        final token = authHeader.substring(bearerPrefix.length);
         try {
           final jwt = JWT.verify(token, SecretKey(config.jwtSecret));
           final payload = jwt.payload as Map<String, dynamic>;

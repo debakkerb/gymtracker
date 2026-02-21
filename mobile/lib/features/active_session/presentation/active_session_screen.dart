@@ -4,9 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'active_session_view_model.dart';
 import 'widgets/rest_timer_widget.dart';
 
-/// Rest duration must match the constant in the view model.
-const _restDuration = 120;
-
 /// A guided session screen that walks through each exercise
 /// set-by-set with a rest timer between sets.
 class ActiveSessionScreen extends StatefulWidget {
@@ -112,6 +109,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                 return _RestView(
                   exerciseName: name,
                   remainingSeconds: state.remainingSeconds,
+                  totalSeconds: vm.restDuration,
                   onSkip: vm.skipRest,
                 );
               }
@@ -235,11 +233,13 @@ class _RestView extends StatelessWidget {
   const _RestView({
     required this.exerciseName,
     required this.remainingSeconds,
+    required this.totalSeconds,
     required this.onSkip,
   });
 
   final String exerciseName;
   final int remainingSeconds;
+  final int totalSeconds;
   final VoidCallback onSkip;
 
   @override
@@ -268,7 +268,7 @@ class _RestView extends StatelessWidget {
             const SizedBox(height: 32),
             RestTimerWidget(
               remainingSeconds: remainingSeconds,
-              totalSeconds: _restDuration,
+              totalSeconds: totalSeconds,
             ),
             const SizedBox(height: 32),
             OutlinedButton.icon(

@@ -4,6 +4,14 @@ import '../../../exercises/data/exercise_repository.dart';
 import '../../domain/workout.dart';
 import '../../domain/workout_exercise.dart';
 
+String _formatRestDuration(int seconds) {
+  final m = seconds ~/ 60;
+  final s = seconds % 60;
+  if (m == 0) return '${s}s';
+  if (s == 0) return '$m min';
+  return '$m min ${s}s';
+}
+
 /// An expandable card that shows a workout's exercises.
 class WorkoutCard extends StatelessWidget {
   const WorkoutCard({
@@ -84,6 +92,23 @@ class WorkoutCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.timer_outlined,
+                      size: 14,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Rest: ${_formatRestDuration(workout.restSeconds)}',
+                      style: textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

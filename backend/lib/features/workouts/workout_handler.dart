@@ -69,12 +69,16 @@ class WorkoutHandler {
       );
     }
 
+    final restSeconds =
+        (body['rest_seconds'] as num?)?.toInt() ?? 120;
+
     final id = _uuid.v4();
     _repo.insert(
       id: id,
       userId: request.userId,
       title: title,
       description: body['description'] as String?,
+      restSeconds: restSeconds,
       exercises: exercises,
     );
 
@@ -98,6 +102,7 @@ class WorkoutHandler {
         'id': row['id'],
         'title': row['title'],
         'description': row['description'],
+        'rest_seconds': row['rest_seconds'],
         'created_at': row['created_at'],
       };
 

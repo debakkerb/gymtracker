@@ -102,6 +102,11 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
                   maxLines: 3,
                   onChanged: (value) => _vm.description = value,
                 ),
+                const SizedBox(height: 16),
+                _RestDurationPicker(
+                  value: _vm.restSeconds,
+                  onChanged: (v) => _vm.restSeconds = v,
+                ),
                 const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,5 +173,44 @@ class _WorkoutCreateScreenState extends State<WorkoutCreateScreen> {
           ),
         ),
     ];
+  }
+}
+
+/// Preset rest durations available in the picker, in seconds.
+const _restPresets = [30, 60, 90, 120, 180, 300];
+
+String _formatRestDuration(int seconds) {
+  final m = seconds ~/ 60;
+  final s = seconds % 60;
+  if (m == 0) return '${s}s';
+  if (s == 0) return '$m min';
+  return '$m min ${s}s';
+}
+
+class _RestDurationPicker extends StatelessWidget {
+  const _RestDurationPicker({required this.value, required this.onChanged});
+
+  final int value;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<int>(
+      initialValue: _restPresets.contains(value) ? value : 120,
+      decoration: const InputDecoration(
+        labelText: 'Rest between sets',
+        border: OutlineInputBorder(),
+        prefixIcon: Icon(Icons.timer_outlined),
+      ),
+      items: _restPresets
+          .map(
+            (s) =>
+                DropdownMenuItem(value: s, child: Text(_formatRestDuration(s))),
+          )
+          .toList(),
+      onChanged: (v) {
+        if (v != null) onChanged(v);
+      },
+    );
   }
 }

@@ -16,11 +16,15 @@ class WorkoutCreateViewModel extends ChangeNotifier {
 
   String _title = '';
   String _description = '';
+  int _restSeconds = 120;
   final List<WorkoutExercise> _exercises = [];
   bool _isLoading = false;
 
   /// The current list of exercises in this workout.
   List<WorkoutExercise> get exercises => List.unmodifiable(_exercises);
+
+  /// Rest duration between sets, in seconds.
+  int get restSeconds => _restSeconds;
 
   /// Whether the form has enough data to submit.
   ///
@@ -35,6 +39,11 @@ class WorkoutCreateViewModel extends ChangeNotifier {
 
   set description(String value) {
     _description = value;
+    notifyListeners();
+  }
+
+  set restSeconds(int value) {
+    _restSeconds = value;
     notifyListeners();
   }
 
@@ -63,6 +72,7 @@ class WorkoutCreateViewModel extends ChangeNotifier {
           id: _uuid.v4(),
           title: _title.trim(),
           description: _description.trim().isEmpty ? null : _description.trim(),
+          restSeconds: _restSeconds,
           exercises: List.unmodifiable(_exercises),
         ),
       );

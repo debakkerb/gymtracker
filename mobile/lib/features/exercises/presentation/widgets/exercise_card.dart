@@ -35,6 +35,18 @@ class ExerciseCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (exercise.imageBytes != null) ...[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.memory(
+                      exercise.imageBytes!,
+                      height: 160,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
                 if (exercise.description != null) ...[
                   Text(exercise.description!, style: textTheme.bodyMedium),
                   const SizedBox(height: 12),

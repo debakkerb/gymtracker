@@ -44,13 +44,23 @@ class AppDatabase {
 
     _db.execute('''
       CREATE TABLE IF NOT EXISTS workouts (
-        id          TEXT PRIMARY KEY,
-        user_id     TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-        title       TEXT NOT NULL,
-        description TEXT,
-        created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+        id           TEXT    PRIMARY KEY,
+        user_id      TEXT    NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        title        TEXT    NOT NULL,
+        description  TEXT,
+        rest_seconds INTEGER NOT NULL DEFAULT 120,
+        created_at   TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
       )
     ''');
+
+    // Idempotent migration: add rest_seconds to existing databases.
+    try {
+      _db.execute(
+        'ALTER TABLE workouts ADD COLUMN rest_seconds INTEGER NOT NULL DEFAULT 120',
+      );
+    } catch (_) {
+      // Column already exists — nothing to do.
+    }
 
     // workout_exercises is an ordered join table (sort_order preserves list
     // position since SQL tables have no inherent order).

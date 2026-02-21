@@ -11,9 +11,6 @@ import '../../workouts/domain/workout.dart';
 import '../../workouts/domain/workout_exercise.dart';
 import '../domain/active_session_state.dart';
 
-/// Rest duration in seconds between sets.
-const _restDuration = 120;
-
 /// Drives an active workout session, managing set progression
 /// and a countdown rest timer between sets.
 class ActiveSessionViewModel extends ChangeNotifier {
@@ -58,6 +55,9 @@ class ActiveSessionViewModel extends ChangeNotifier {
 
   /// The exercise currently being performed.
   WorkoutExercise get currentExercise => workout.exercises[_exerciseIndex];
+
+  /// The configured rest duration for this workout, in seconds.
+  int get restDuration => workout.restSeconds;
 
   /// Marks the current set as done. If more work remains,
   /// starts a 2-minute rest timer; otherwise marks the
@@ -119,7 +119,7 @@ class ActiveSessionViewModel extends ChangeNotifier {
 
   void _startRestTimer() {
     _isResting = true;
-    _remainingSeconds = _restDuration;
+    _remainingSeconds = workout.restSeconds;
     notifyListeners();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {

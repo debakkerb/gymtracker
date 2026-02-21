@@ -10,7 +10,7 @@ class WorkoutRepository {
 
   /// Returns all workouts owned by [userId], without their exercise lists.
   List<Row> findAllByUser(String userId) => _db.db.select(
-        'SELECT id, title, description, created_at '
+        'SELECT id, title, description, rest_seconds, created_at '
         'FROM workouts WHERE user_id = ? ORDER BY created_at ASC',
         [userId],
       );
@@ -18,7 +18,7 @@ class WorkoutRepository {
   /// Returns a single workout row owned by [userId], or `null`.
   Row? findByIdAndUser(String id, String userId) {
     final rows = _db.db.select(
-      'SELECT id, title, description, created_at '
+      'SELECT id, title, description, rest_seconds, created_at '
       'FROM workouts WHERE id = ? AND user_id = ?',
       [id, userId],
     );
@@ -38,11 +38,13 @@ class WorkoutRepository {
     required String userId,
     required String title,
     String? description,
+    required int restSeconds,
     required List<Map<String, dynamic>> exercises,
   }) {
     _db.db.execute(
-      'INSERT INTO workouts (id, user_id, title, description) VALUES (?, ?, ?, ?)',
-      [id, userId, title, description],
+      'INSERT INTO workouts (id, user_id, title, description, rest_seconds) '
+      'VALUES (?, ?, ?, ?, ?)',
+      [id, userId, title, description, restSeconds],
     );
 
     for (var i = 0; i < exercises.length; i++) {

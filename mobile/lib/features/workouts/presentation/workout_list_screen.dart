@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/fitness_hero_banner.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../exercises/data/exercise_repository.dart';
 import '../domain/workout.dart';
@@ -33,27 +34,38 @@ class WorkoutListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ValueListenableBuilder<List<Workout>>(
-        valueListenable: viewModel.workouts,
-        builder: (context, workouts, _) {
-          if (workouts.isEmpty) {
-            return const _EmptyState();
-          }
-          return ListView.builder(
-            padding: const EdgeInsets.only(top: 8, bottom: 88),
-            itemCount: workouts.length,
-            itemBuilder: (context, index) {
-              final workout = workouts[index];
-              return WorkoutCard(
-                workout: workout,
-                exerciseRepository: exerciseRepository,
-                onDelete: () => _confirmDelete(context, workout),
-                onStartSession: () =>
-                    context.go('/sessions/active/${workout.id}'),
-              );
-            },
-          );
-        },
+      body: Column(
+        children: [
+          const FitnessHeroBanner(
+            title: 'Your Workouts',
+            subtitle: 'Stay consistent, stay strong',
+            height: 140,
+          ),
+          Expanded(
+            child: ValueListenableBuilder<List<Workout>>(
+              valueListenable: viewModel.workouts,
+              builder: (context, workouts, _) {
+                if (workouts.isEmpty) {
+                  return const _EmptyState();
+                }
+                return ListView.builder(
+                  padding: const EdgeInsets.only(top: 8, bottom: 88),
+                  itemCount: workouts.length,
+                  itemBuilder: (context, index) {
+                    final workout = workouts[index];
+                    return WorkoutCard(
+                      workout: workout,
+                      exerciseRepository: exerciseRepository,
+                      onDelete: () => _confirmDelete(context, workout),
+                      onStartSession: () =>
+                          context.go('/sessions/active/${workout.id}'),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: const _BottomActions(),
     );
