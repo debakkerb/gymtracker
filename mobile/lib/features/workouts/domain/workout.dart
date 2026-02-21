@@ -28,6 +28,18 @@ class Workout {
         .toList(),
   );
 
+  /// Returns a copy of this workout with [exercises] replaced.
+  ///
+  /// Used to create a temporary session-specific order without altering the
+  /// persisted workout.
+  Workout withExercises(List<WorkoutExercise> exercises) => Workout(
+    id: id,
+    title: title,
+    description: description,
+    restSeconds: restSeconds,
+    exercises: exercises,
+  );
+
   /// Serialises for API create requests.
   ///
   /// The [id] field is intentionally omitted — it is assigned by the server.

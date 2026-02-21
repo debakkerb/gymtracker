@@ -58,7 +58,7 @@ class WorkoutListScreen extends StatelessWidget {
                       exerciseRepository: exerciseRepository,
                       onDelete: () => _confirmDelete(context, workout),
                       onStartSession: () =>
-                          context.go('/sessions/active/${workout.id}'),
+                          context.go('/sessions/setup/${workout.id}'),
                     );
                   },
                 );

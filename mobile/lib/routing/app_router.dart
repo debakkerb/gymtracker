@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/active_session/presentation/active_session_screen.dart';
 import '../features/active_session/presentation/active_session_view_model.dart';
+import '../features/active_session/presentation/session_setup_screen.dart';
 import '../features/auth/data/auth_repository.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/login_view_model.dart';
@@ -19,6 +20,7 @@ import '../features/session_history/data/session_history_repository.dart';
 import '../features/session_history/presentation/session_history_screen.dart';
 import '../features/session_history/presentation/session_history_view_model.dart';
 import '../features/workouts/data/workout_repository.dart';
+import '../features/workouts/domain/workout.dart';
 import '../features/workouts/presentation/workout_create_screen.dart';
 import '../features/workouts/presentation/workout_create_view_model.dart';
 import '../features/workouts/presentation/workout_list_screen.dart';
@@ -77,11 +79,36 @@ GoRouter buildRouter({
           ),
         ),
       ),
+      // Step 1 of starting a session: review and optionally reorder exercises.
+      GoRoute(
+        path: '/sessions/setup/:workoutId',
+        builder: (context, state) {
+          final id = state.pathParameters['workoutId']!;
+          final workout = workoutRepository.findById(id);
+          if (workout == null) {
+            return const Scaffold(
+              body: Center(child: Text('Workout not found')),
+            );
+          }
+          return SessionSetupScreen(
+            workout: workout,
+            exerciseRepository: exerciseRepository,
+          );
+        },
+      ),
+      // Step 2: the active guided session.
+      //
+      // Reads a [Workout] from [GoRouterState.extra] when present so that the
+      // setup screen can pass a session-specific exercise order without
+      // modifying the stored workout.  Falls back to the repository copy when
+      // navigated to directly (e.g. deep link).
       GoRoute(
         path: '/sessions/active/:workoutId',
         builder: (context, state) {
           final id = state.pathParameters['workoutId']!;
-          final workout = workoutRepository.findById(id);
+          final workout = state.extra is Workout
+              ? state.extra as Workout
+              : workoutRepository.findById(id);
           if (workout == null) {
             return const Scaffold(
               body: Center(child: Text('Workout not found')),
